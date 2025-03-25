@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>測驗</title>
+        <style>
+            .input-name,
+            .input-price{
+                width:100px;
+            }
+            .product-grid{
+                margin-top:20px;
+                display: grid;
+                grid-template-columns: 112px 112px 50px;
+                row-gap: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <input class="input-name" placeholder="輸入商品名稱">
+        <input class="input-price" placeholder="輸入商品價格">
+        <button onclick="showProduct()">新增</button>
+        <div class="product-grid">
+            <!-- 商品1 -->
+            <!-- <div>海底撈泡麵</div>
+            <div>200</div>
+            <button>刪除</button> -->
+
+            <!-- 商品2 -->
+            <!-- <div>養氣人蔘</div>
+            <div>400</div>
+            <button>刪除</button> -->
+        </div>
+           
+
+        <script>
+            function showProduct(){
+                let name = document.querySelector('.input-name').value;
+                let price = document.querySelector('.input-price').value;
+                let productGrid = document.querySelector('.product-grid');
+                let divName = document.createElement('div');
+                let divPrice = document.createElement('div');
+                let button = document.createElement('button');
+                divName.textContent = name;
+                divPrice.textContent = price;
+                button.textContent = '刪除';
+                document.querySelector('.input-name').value = '';
+                document.querySelector('.input-price').value = '';
+                button.onclick = function(){
+                    productGrid.removeChild(divName);
+                    productGrid.removeChild(divPrice);
+                    productGrid.removeChild(button);
+                }
+                productGrid.appendChild(divName);
+                productGrid.appendChild(divPrice);
+                productGrid.appendChild(button);
+            }
+        </script>
+    </body>
+</html>

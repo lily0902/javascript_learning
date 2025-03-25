@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>測驗</title>
+        <style>
+            .input-name,
+            .input-price{
+                width:100px;
+            }
+            .product-grid{
+                margin-top:20px;
+                display: grid;
+                grid-template-columns: 112px 112px 50px;
+                row-gap: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <input class="input-name" placeholder="輸入商品名稱">
+        <input class="input-price" placeholder="輸入商品價格">
+        <button onclick="addProduct();">新增</button>
+        <div class="product-grid">
+            <!-- 商品1 -->
+            <!-- <div>海底撈泡麵</div>
+            <div>200</div>
+            <button>刪除</button> -->
+
+            <!-- 商品2 -->
+            <!-- <div>養氣人蔘</div>
+            <div>400</div>
+            <button>刪除</button> -->
+
+        </div>
+
+
+        <script>
+            let products = [];
+            function renderProducts() {
+                let html = "";
+                for (let i=0; i<products.length; i++) {
+                    html += `
+                        <div>${products[i].name}</div>
+                        <div>${products[i].price}</div>
+                        <button onclick="removeProduct(${i});">刪除</button>
+                    `;
+                }
+                document.querySelector(".product-grid").innerHTML = html;
+            }
+
+            function addProduct() {
+                const inputName = document.querySelector(".input-name");
+                const inputPrice = document.querySelector(".input-price");
+                products.push({
+                    name: inputName.value,
+                    price: inputPrice.value
+                });
+                inputName.value = "";
+                inputPrice.value = "";
+                
+                renderProducts();
+            }   
+
+            function removeProduct(i) {
+                products.splice(i, 1);
+                renderProducts();
+            }
+
+        </script>
+    </body>
+</html>

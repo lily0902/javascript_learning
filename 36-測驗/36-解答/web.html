@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>測驗</title>
+    </head>
+    <body>
+        <input placeholder="輸入商品名稱">
+        <button onclick="addProduct();">新增</button>
+        <div>
+
+        </div>
+
+
+        <script>
+            let products = [];
+            function addProduct() {
+                const input = document.querySelector('input');
+                products.push(input.value);
+                input.value = "";
+                console.log(products);
+
+                let html = "";
+                for (let i=0; i<products.length; i++) {
+                    html += `<p>${products[i]}</p>`; 
+                }
+
+                document.querySelector('div').innerHTML = html;
+            }
+
+        </script>
+    </body>
+</html>

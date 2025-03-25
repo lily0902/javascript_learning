@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>測驗</title>
+    </head>
+    <body>
+        <button onclick="subscribe();">訂閱</button>
+        
+
+        <script>
+            function subscribe() {
+                const buttonElement = 
+                document.querySelector('button');
+
+                if (buttonElement.innerText === '訂閱') {
+                    buttonElement.innerText = '已訂閱';
+                } else {
+                    buttonElement.innerText = '訂閱';
+                }
+                
+                console.log(buttonElement.innerText);
+            }
+
+        </script>
+    </body>
+</html>

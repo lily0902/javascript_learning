@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>剪刀 石頭 布</title>
+        <style>
+            p{
+                font-size: 30px;
+            }
+            button{
+                font-size: 30px;
+                margin-right: 20px;
+                width: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <p>請選擇 剪刀 石頭 布</p>
+        <button onclick="check(0)">剪刀</button>
+        <button onclick="check(1)">石頭</button>
+        <button onclick="check(2)">布</button>
+
+        <script>
+            function check(num){
+                let randomNum = Math.floor(Math.random()*3);
+                let computerChoice = "";
+                console.log(randomNum);
+                if (randomNum==0) {
+                    computerChoice = "剪刀";
+                } else if (randomNum==1) {
+                    computerChoice = "石頭";
+                } else {
+                    computerChoice = "布";
+                }
+
+                if (num==0){
+                    yourChoice = "剪刀";
+                }
+                else if (num==1){
+                    yourChoice = "石頭";
+                }
+                else{
+                    yourChoice = "布";
+                }
+
+
+                if (computerChoice === yourChoice ) {
+                    alert(`你出${yourChoice} 電腦出${computerChoice}，此局平手!`);
+                } else if (computerChoice === "石頭"&& yourChoice === "剪刀" || computerChoice === "剪刀"&& yourChoice === "布" || computerChoice === "布"&& yourChoice === "石頭") {
+                    alert(`你出${yourChoice} 電腦出${computerChoice}，此局你輸了!`);
+                } else {
+                    alert(`你出${yourChoice} 電腦出${computerChoice}，此局你贏了!`);
+                }
+            }
+        </script>
+    </body>
+</html>

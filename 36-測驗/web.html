@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>測驗</title>
+    </head>
+    <body>
+        <input placeholder="輸入商品名稱">
+        <button onclick="addProduct()">新增</button>
+        <div>
+
+        </div>
+
+        
+
+        <script>
+            function addProduct() {
+                var productName = document.querySelector('input').value; 
+                var div = document.querySelector('div');
+                var p = document.createElement('p');
+                p.textContent = productName;
+                div.appendChild(p);
+                document.querySelector('input').value = '';
+            }
+        </script>
+    </body>
+</html>
