@@ -40,7 +40,11 @@
 //     { name : "Elle"  , age : 31 , scores : [100,73,83] },
 // ];
 
-// let a = studentsScores.map(sum => sum.scores.)
+// let a = studentsScores.filter(element => element["age"] >= 30).map(element => element["name"]);
+// console.log(a);
+
+// let b = studentsScores.filter(element => element.scores.reduce((sum, score) => sum + score, 0) >= 250).map(element => element["name"] + "-" + element["age"]);
+// console.log(b);
 
 // let data = ["a", "b", "c", "c", "c", "a", "d", "b", "b", "a", "c"];
 
@@ -76,8 +80,17 @@
 // }
 // console.log(fibonacci(10));
 
-let i = 0;
-while (i < 30) {
-    console.log(Math.ceil(Math.random()*45));
-    i++;
+// let i = 0;
+// while (i < 30) {
+//     console.log(Math.ceil(Math.random()*45));
+//     i++;
+// }
+
+let num = [];
+while (num.length < 6) { 
+    let randomNum = Math.ceil(Math.random() * 45);
+    if (!num.includes(randomNum)) {
+        num.push(randomNum);
+    }
 }
+console.log(num);
