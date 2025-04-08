@@ -1,3 +1,2 @@
 # javascript_learning
-1. js上課連結(~3/9)(https://www.youtube.com/watch?v=7unH6k0Dyd0&t=6s)
-2. jshomework是非同步連結的作業(3/9)(https://www.youtube.com/watch?v=_XCUYsAslkg)
+筆記和進度: https://palm-curtain-2aa.notion.site/JAVASCRIPT-1ce4963a0343804db42aea5bc4167590?pvs=4
