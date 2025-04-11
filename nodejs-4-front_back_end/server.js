@@ -4,6 +4,8 @@ const path = require("path"); //npm install path
 const app = express();
 const portNum = 8088;
 
+const dramasRouter = require("./router/dramas.js");
+
 // [1] 設定模板引擎 (解析 html 檔 , 讓 express 看懂 html 程式)
 //hbs -> handlebars 為一種模板引擎
 //另外一種熱門的模板引擎 --> pug
@@ -19,10 +21,13 @@ app.use(express.static(path.join(__dirname, "application")));
 app.get("/", (req, res) => {
   //res.send("嗨嗨,  我是 Node.js server.");
   
-  
   // [4] 使用 .render (渲染) 回傳 html 頁面 
   res.render("index.html");
 });
+
+app.use("/dramas", dramasRouter);
+
+
 app.get("/testqq", (req, res) => {
   res.render("template.html");
 });
