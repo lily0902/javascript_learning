@@ -5,18 +5,26 @@ const app = express();
 const portNum = 8088;
 
 // [1] 設定模板引擎 (解析 html 檔 , 讓 express 看懂 html 程式)
+//hbs -> handlebars 為一種模板引擎
+//另外一種熱門的模板引擎 --> pug
 app.engine("html", hbs.__express);
 
-// [2] 設定模板 (template) 位置
+// [2] 設定模板 (template) 位置 (讀取 *.css / *.js / *.jpg / *.png / *.mp4 / ...)
 app.set("views", path.join(__dirname, "application", "views"));
 
 // [3] 設定靜態檔的位置
+// --> 處理 靜態檔 相關 requests
 app.use(express.static(path.join(__dirname, "application")));
 
 app.get("/", (req, res) => {
   //res.send("嗨嗨,  我是 Node.js server.");
-  // [4] 使用 .render 回傳 html 頁面
+  
+  
+  // [4] 使用 .render (渲染) 回傳 html 頁面 
   res.render("index.html");
+});
+app.get("/testqq", (req, res) => {
+  res.render("template.html");
 });
 
 app.listen(portNum , ()=>{
