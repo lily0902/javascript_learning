@@ -27,6 +27,11 @@ app.get("/", (req, res) => {
 
 app.use("/dramas", dramasRouter);
 
+//關於我們
+app.get("/about/us", (req, res) => {
+  res.render("aboutus.html");
+});
+
 
 app.get("/testqq", (req, res) => {
   res.render("template.html");
@@ -36,5 +41,5 @@ app.get("/data", (req, res) => {
   res.json({ name: "jeff", age: 18 , message : "今天好冷喔~~"});
  });
 app.listen(portNum , ()=>{
-  console.log(`Server is running at localhost:${portNum}`);
+  console.log(`Server is running at http://localhost:${portNum}`);
 });

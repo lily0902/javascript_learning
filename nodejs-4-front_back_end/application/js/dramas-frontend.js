@@ -7,15 +7,18 @@ $(function(){
         // alert("QQQQ");
         ////////
 
-        //// 使用 ajax 發 request 
-        //// 並用 query_string 攜帶參數
+
+        
         let type = $("#categories-select").val();
         console.log(type);
-        console.log("/dramas/getDramaListData?type=" + type);
+        console.log("/dramas/getDramaListData?type=" + type)
 
+
+
+        //// 使用 ajax 發 request 
+        //// 並用 query_string 攜帶參數
         $.ajax({
-            url  : "/dramas/list?type=" + type,   // API 位置
-            // url  : "/dramas/getDramaListData?type=" + type,   // API 位置
+            url  :  "/dramas/getDramaListData?type=" + type,   // API 位置
             type : "GET"    // requests 的方法 (種類)
          })
          .then(res=>{ 
