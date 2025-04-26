@@ -23,7 +23,18 @@ router.get("/getDramaListData", async(req, res) => {
     try {
         //讀取 models/sample2.json , response 給前端
         let data = await readFilePromise("models/sample2.json");
-        res.json({ result: data });
+        let type = req.query.type;
+        
+        if (type === "全") {
+            res.json({ result: data });
+        }
+        else {
+            let filteredData = data.filter(ele => ele["category"] === type);
+            console.log(filteredData);
+            res.json({ result: filteredData });
+        }
+
+        
     } catch (err){
         res.status(500).json({ message: "讀取資料失敗" });
     }
