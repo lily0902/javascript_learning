@@ -30,12 +30,15 @@ router.get("/getDramaListData", async(req, res) => {
         }
         else {
             let filteredData = data.filter(ele => ele["category"] === type);
-            console.log(filteredData);
             res.json({ result: filteredData });
         }
 
         
-    } catch (err){
+    } catch (err) {
+        // 2xx 請求ok
+        // 3xx 請求ok, 但資源換位置 , response 會告訴你下一個位置
+        // 4xx Client 端問題
+        // 5xx Server 端問題 ex server.js 出現bug
         res.status(500).json({ message: "讀取資料失敗" });
     }
 });
