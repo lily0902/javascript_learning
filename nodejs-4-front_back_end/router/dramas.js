@@ -19,8 +19,12 @@ router.get("/page", (req, res) => {
     res.render("dramas.html");
 });
 
-router.get("/getDramaListData", async(req, res) => {
+//GET /dramas/getDramaListData --> 讀取資料
+router.get("/list", async (req,res) =>{ //API 佳!!!
+//router.get("/getDramaListData", async(req, res) => { //API 不佳
     try {
+
+
         //讀取 models/sample2.json , response 給前端
         let data = await readFilePromise("models/sample2.json");
         let type = req.query.type;
@@ -44,20 +48,43 @@ router.get("/getDramaListData", async(req, res) => {
 });
 
 //POST /dramas/createNewDramaData --> 新增資料
-router.post("/createNewDramaData", async (req, res) => { 
+router.post("/data" , async (req, res) => {  //API 佳!!!
+//router.post("/createNewDramaData", async (req, res) => {   //API 不佳
     try {
+        ////// 2) 新增dramaId
         //將 req.body (Form Data) 寫入到 sample2.json 裡
         //1. 先讀出此array
         let data = await readFilePromise("models/sample2.json");
+        
         //2. 使用 .push
+        //抓出最新的 dramaId
+        let latestDramaId = data.map(ele => ele["dramaId"])
+            .filter(v => v != undefined) //過濾undefined 資料
+            .sort((a, b) => b - a)[0]; // 從大 -> 小排序
+        let newDramaId = Number(latestDramaId) + 1; // 新的 dramaId
+        req.body["dramaId"] = String(newDramaId); // 新的 dramaId
         data.push(req.body);
+        
         //3. 再把 資料寫出去 sample2.json (同步處理)
         fs.writeFileSync("models/sample2.json", JSON.stringify(data), "utf8");
 
-
-
         console.log(req.body);
         res.json({ message: "ok." });
+        
+        // ////// 1) 不管dramaId
+        // //將 req.body (Form Data) 寫入到 sample2.json 裡
+        // //1. 先讀出此array
+        // let data = await readFilePromise("models/sample2.json");
+        // //2. 使用 .push
+        // // data -> [{},{},{},....]
+        // data.push(req.body);
+        // //3. 再把 資料寫出去 sample2.json (同步處理)
+        // fs.writeFileSync("models/sample2.json", JSON.stringify(data), "utf8");
+
+
+
+        // console.log(req.body);
+        // res.json({ message: "ok." });
     }catch (err) {
         res.status(500).json({ message: "系統有問題!!!" });
     }
