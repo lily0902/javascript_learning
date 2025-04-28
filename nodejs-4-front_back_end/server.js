@@ -26,9 +26,9 @@ app.use(bodyParser.json());
 
 //[Body-Parser][2] 解析 application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
-  extend: false,
-  limit: "1mb",
-  parameterLimit: "10000"
+  extend: false,  //是否使用 額外套件 解析字串
+  limit: "1mb", // 限制 參數資料大小
+  parameterLimit: "10000"  //限制參數個數
 }));
 
 

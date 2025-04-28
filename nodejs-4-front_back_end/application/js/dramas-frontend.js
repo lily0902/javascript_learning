@@ -95,7 +95,7 @@ let insertNewRecord = ()=> {
         //     name,
         //     score
         // }),
-        // contentType: "application/json",
+        // contentType: "application/json"
         //
     })
     .then(r=>{
