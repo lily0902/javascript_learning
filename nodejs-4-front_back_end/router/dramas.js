@@ -43,4 +43,14 @@ router.get("/getDramaListData", async(req, res) => {
     }
 });
 
+//POST /dramas/createNewDramaData --> 新增資料
+router.post("/createNewDramaData", async (req, res) => { 
+    try {
+        console.log(req.body);
+        res.json({ message: "ok." });
+    }catch (err) {
+        res.status(500).json({ message: "系統有問題!!!" });
+    }
+});
+
 module.exports = router;

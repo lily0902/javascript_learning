@@ -77,8 +77,8 @@ let insertNewRecord = ()=> {
 
 
     $.ajax({
-        url  : "/dramas/data",
-        // url  : "/dramas/createNewDramaData",
+        //url  : "/dramas/data",
+        url  : "/dramas/createNewDramaData",
         type : "POST",
 
         //// 以 application/x-www-form-urlencoded 資料傳送
@@ -86,17 +86,17 @@ let insertNewRecord = ()=> {
             category,
             name,
             score
-        },
+        }
         ////
         
-        //// 以 application/json 資料傳送
+        // 以 application/json 資料傳送
         // data : JSON.stringify({
         //     category,
         //     name,
         //     score
         // }),
         // contentType: "application/json",
-        ////
+        //
     })
     .then(r=>{
         if(r.message === "ok."){
