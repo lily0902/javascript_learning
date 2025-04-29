@@ -3,6 +3,8 @@ const app = express();
 
 const portNum = 8088;
 
+const membersRouter = require("./router/members.js");
+
 
 //////////////////////////////////// 
 // This is for swagger API documents.
@@ -24,6 +26,8 @@ app.get("/",(req,res)=>{
   res.send("這是 Node.js server , 查看 <a href='/api-docs'> members API 文件</a>");
 })
 
+app.use("/members", membersRouter);
+
 
 app.use((req,res)=>{
   res.status(404).send("API 尚未開發！");
@@ -32,5 +36,5 @@ app.use((req,res)=>{
 
 
 app.listen(portNum,()=>{
-    console.log(`API server is running at localhost:${portNum}`);
+    console.log(`API server is running at http://localhost:${portNum}`);
 });
