@@ -39,6 +39,10 @@ app.get("/",(req,res)=>{
     res.render("index.html");
 });
 
+app.get("/hello",
+	(req, res, next) => {
+		res.send ("Hello World");
+	 })
 
 
 app.listen(8088,function(){
