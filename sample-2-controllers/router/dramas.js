@@ -24,19 +24,29 @@ router.get("/page",
 );
 
 
-// GET /dramas/list
-router.get("/list",(req,res)=>{
-    let data = fs.readFileSync("./models/sample2.json","utf8");
-    data = JSON.parse(data);
+// GET /dramas/list --> 取得資料
+router.get("/list",
+    // 1. 檢查 type 是否存在 (m1)
+    (req, res, next) => { },
+    
+    // 2. 檢查 type 是否正確 (m2)
+    (req,res,next) =>{},
+    
+    //最後的 middleware (處理業務邏輯)
+    async (req, res) => {
+        try {
+            let data = await fs.readFilePromise("./models/sample2.json", "utf8");
+            let type = req.query.type;
 
-    let type = req.query.type;
+            if (type === "全") {
+                res.json({ result: data });
+            } else {
+                let filteredData = data.filter(ele => ele["category"] === type);
+                res.json({ result: filteredData });
+            };
+        } catch (err) { }
 
-    if(type === "全"){
-        res.json({ result:data });
-    }else{
-        let filteredData = data.filter(ele => ele["category"] === type);
-        res.json({ result : filteredData });
-    };
+    
 
 });
 
