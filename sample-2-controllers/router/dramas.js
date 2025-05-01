@@ -1,7 +1,20 @@
 const express = require("express");
 const fs      = require("fs");
 
-let router    = express.Router();
+let router = express.Router();
+
+let readFilePromise = (dataPath) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(dataPath,"utf8", (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                //轉成 javaScript 物件
+                resolve(JSON.parse(data));
+            }
+        });
+    });
+};
 
 
 let isUserLogined = (req,res,next)=>{
@@ -16,6 +29,7 @@ let isUserLogined = (req,res,next)=>{
 //router.use(isUserLogined);
 
 
+
 router.get("/page",
     (req,res)=>{
         //let name = req.session.userInfo.name;
@@ -27,6 +41,7 @@ router.get("/page",
 
 
 // GET /dramas/list --> 取得資料
+// [Work1] 加入參數檢查 (M1)
 router.get("/list",
     // 1. 檢查 type 是否存在 (m1)
     (req, res, next) => {
@@ -39,13 +54,25 @@ router.get("/list",
         }
      },
     
-    // 2. 檢查 type 是否正確 (m2)
-    //(req,res,next) =>{},
+    //2. 檢查 type 是否正確 (m2)
+    (req, res, next) => {
+        // type 值是否在 
+        let data = ["犯罪", "殭屍", "愛情", "政治", "其他", "全"];
+
+        // if indexOf() == -1 代表不在 array 裡
+        if (data.indexOf(req.query.type) === -1) {
+            console.log("發生錯誤2!!!");
+            res.status(400).json({ message: "type 值有誤!" });
+        }
+        else {
+            next();
+        }
+    },
     
     //最後的 middleware (處理業務邏輯)
     async (req, res) => {
         try {
-            let data = await fs.readFilePromise("./models/sample2.json", "utf8");
+            let data = await readFilePromise("./models/sample2.json");
             let type = req.query.type;
 
             if (type === "全") {
@@ -54,7 +81,9 @@ router.get("/list",
                 let filteredData = data.filter(ele => ele["category"] === type);
                 res.json({ result: filteredData });
             };
-        } catch (err) { }
+        } catch (err) { 
+            console.log(err);
+        }
 
     
 
@@ -62,60 +91,91 @@ router.get("/list",
 
 
 // POST /dramas/data
-router.post("/data",(req,res)=>{
+// [Work2] 加入 API token 檢查機制, 預期使用者 token 寫在 headers
+router.post("/data",
+    // 1. 檢查 header 是否有 token (M1)
+    (req, res, next) => {
+        // 檢查 headers --> req.headers
+        if (!req.headers["x-jeff-token"]) {
+            console.log("[M1] 無 token !!!");
+            res.status(400).json({ message: "token 人呢???" });
+        }
+        else {
+            next();
+        }
+    },
 
+    // 2. 檢查 token 是否正確 (M2)
+    (req, res, next) => {
+        if (req.headers["x-jeff-token"] !== "APTX4869") { 
+            console.log("[M2] token 錯誤 !!!");
 
-    let payload = req.body ;
+            // status_code = 403 --> 無權限 (Forbidden)
+            res.status(403).json({ message: "您沒有權限!" });
+        }
+        else {
+            next();
+        }
+    },
+    // 3. 處理業務邏輯 (M3)
+    async (req, res)=> {
+    try{
+        let payload = req.body ;
 
-    console.log(payload);
-    // console.log(payload["name"]);
-    // console.log(payload["score"]);
-
-
-    ////// 1) 不管 dramaId 
-
-    // // 讀取 json 
-    // let data = fs.readFileSync("./models/sample2.json","utf8");
-    // data = JSON.parse(data);
-
-    // // [ {} , {} , {} , ...]
-    // // 塞入 array
-    // data.push(payload);
-
-    // // 寫出成 json file 
-    // // fs.writeFileSync("./models/sample2.json",data,"utf8");
-    // fs.writeFileSync("./models/sample2.json",JSON.stringify(data),"utf8");
-
-
-    ////// 2) 調整 dramaId
-    // 讀取 json 
-    let data = fs.readFileSync("./models/sample2.json","utf8");
-    data = JSON.parse(data);
-
-    // 取得最新 dramaId 
-    // [ "1001" , "1002" , "1003" , ... , "1007" ]
-    // let latestDramaId  = data.map(ele => ele["dramaId"]).slice(-1)[0] ;
-    // let newDramaId     = Number(latestDramaId) + 1 ;
-
-    let latestDramaId  = data.map(ele => Number(ele["dramaId"])) 
-                             .sort((a,b)=> b-a)[0];
-
-    let newDramaId     = latestDramaId + 1 ;
-
-    payload["dramaId"] = String( newDramaId );
-
-
-
-    // [ {} , {} , {} , ...]
-    // 塞入 array
-    data.push(payload);
-
-    // 寫出成 json file 
-    // fs.writeFileSync("./models/sample2.json",data,"utf8");
-    fs.writeFileSync("./models/sample2.json",JSON.stringify(data),"utf8");
-
-
-    res.json({message : "ok."});
+        console.log(payload);
+        // console.log(payload["name"]);
+        // console.log(payload["score"]);
+        
+        
+        ////// 1) 不管 dramaId 
+        
+        // // 讀取 json 
+        // let data = fs.readFileSync("./models/sample2.json","utf8");
+        // data = JSON.parse(data);
+        
+        // // [ {} , {} , {} , ...]
+        // // 塞入 array
+        // data.push(payload);
+        
+        // // 寫出成 json file 
+        // // fs.writeFileSync("./models/sample2.json",data,"utf8");
+        // fs.writeFileSync("./models/sample2.json",JSON.stringify(data),"utf8");
+        
+        
+        ////// 2) 調整 dramaId
+        // 讀取 json 
+        let data = fs.readFileSync("./models/sample2.json", "utf8");
+        data = JSON.parse(data);
+        
+        // 取得最新 dramaId 
+        // [ "1001" , "1002" , "1003" , ... , "1007" ]
+        // let latestDramaId  = data.map(ele => ele["dramaId"]).slice(-1)[0] ;
+        // let newDramaId     = Number(latestDramaId) + 1 ;
+        
+        let latestDramaId  = data.map(ele => Number(ele["dramaId"]))
+            .sort((a, b) => b - a)[0];
+        
+        let newDramaId     = latestDramaId + 1 ;
+        
+        payload["dramaId"] = String(newDramaId);
+        
+        
+        
+        // [ {} , {} , {} , ...]
+        // 塞入 array
+        data.push(payload);
+        
+        // 寫出成 json file 
+        // fs.writeFileSync("./models/sample2.json",data,"utf8");
+        fs.writeFileSync("./models/sample2.json", JSON.stringify(data), "utf8");
+        
+        
+        res.json({ message: "ok." });
+    }
+        catch(err) {
+        console.log(err);
+        res.status(500).json({ message: "server error." });
+    }
 
 });
 

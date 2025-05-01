@@ -7,9 +7,9 @@ $(function(){
         // Ajax
         // query_string 
         $.ajax({
-            url  : "/dramas/list", // 1. 忘記帶 type
+            //url  : "/dramas/list", // 1. 忘記帶 type
             //url  : "/dramas/list?type=ABCD", // 2. type 亂帶
-            //url  : "/dramas/list?type="+type,  // 3. type 正常
+            url  : "/dramas/list?type="+type,  // 3. type 正常
             type : "GET",
             timeout: 10000 // 10 sec
         })
@@ -81,8 +81,15 @@ let insertNewRecord = ()=> {
 
 
     $.ajax({
-        url  : "/dramas/data",
-        type : "POST",
+        url: "/dramas/data",
+        type: "POST",
+        
+        //新增 headers key-value pair
+        headers: {
+            // 1. 沒帶 token
+            //"x-jeff-token": "qqq"  // 2. token 帶錯
+            "x-jeff-token" : "APTX4869"  // 3. token 正確
+        },
         data : {
             category,
             name,
@@ -103,19 +110,21 @@ let insertNewRecord = ()=> {
     .catch(err=>{
         console.log(err);
 
+        alert(err.responseJSON.message);
+
         if(err.status === 404){
             alert("找不到該 API !");
             return;
         };
 
-        if(err.status === 401){
-            alert("請先登入 , 2秒後自動將您跳轉！");
-            setTimeout(function(){
-                location.href="/login";
-            },2000);
-            return;
-        };
+        // if(err.status === 401){
+        //     alert("請先登入 , 2秒後自動將您跳轉！");
+        //     setTimeout(function(){
+        //         location.href="/login";
+        //     },2000);
+        //     return;
+        // };
         
-        alert("系統有誤 , 請稍後再試！");
+        //alert("系統有誤 , 請稍後再試！");
     });
 };
