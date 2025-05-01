@@ -7,18 +7,23 @@ $(function(){
         // Ajax
         // query_string 
         $.ajax({
-            url  : "/dramas/list?type="+type,
+            url  : "/dramas/list", // 1. 忘記帶 type
+            //url  : "/dramas/list?type=ABCD", // 2. type 亂帶
+            //url  : "/dramas/list?type="+type,  // 3. type 正常
             type : "GET",
             timeout: 10000 // 10 sec
         })
-        .then(function(response){
+            .then(function (response) {
+            // 成功 -> status_code = 2xx , 3xx
             console.log(response);
 
             createTable(response["result"]);
 
         })
-        .catch(function(error){
+            .catch(function (error) {
+            // 失敗 -> status_code = 4xx , 5xx
             console.log(error);
+            alert(error.responseJSON.message);
 
             if(error.status === 401){
                 alert("請先登入！");

@@ -13,13 +13,15 @@ let isUserLogined = (req,res,next)=>{
 }
 
 
-router.use(isUserLogined);
+//router.use(isUserLogined);
 
 
 router.get("/page",
     (req,res)=>{
-        let name = req.session.userInfo.name;
-        res.render("dramas.html",{ templateName : name });
+        //let name = req.session.userInfo.name;
+        //res.render("dramas.html",{ templateName : name });
+        res.render("dramas.html");
+        
     }
 );
 
@@ -27,10 +29,18 @@ router.get("/page",
 // GET /dramas/list --> 取得資料
 router.get("/list",
     // 1. 檢查 type 是否存在 (m1)
-    (req, res, next) => { },
+    (req, res, next) => {
+        if (!req.query.type) {
+            // 調整 status_code = 400 --> 前端接到 , 才會進到 error 區的程式
+            res.status(400).json({ message: "請帶入 type 參數" });
+        }
+        else {
+            next();
+        }
+     },
     
     // 2. 檢查 type 是否正確 (m2)
-    (req,res,next) =>{},
+    //(req,res,next) =>{},
     
     //最後的 middleware (處理業務邏輯)
     async (req, res) => {
