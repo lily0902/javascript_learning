@@ -35,6 +35,7 @@ let isUserLogined = (req,res,next)=>{
 
 
 
+
 router.get("/page",
     (req,res)=>{
         //let name = req.session.userInfo.name;
@@ -44,6 +45,13 @@ router.get("/page",
     }
 );
 
+// .use -> request 100% 會經過的 middleware
+router.use(
+    validator.isTokenExist, // 1. 檢查 token 是否存在 (M1)
+    validator.isTokenVaild // 2. 檢查 token 是否正確 (M2)
+);
+
+
 
 // GET /dramas/list --> 取得資料
 // [Work1] 加入參數檢查 (M1)
@@ -51,8 +59,8 @@ router.get("/page",
 router.get("/list",
 
     //////使用 validator.js 的 middleware (實名 Middleware)
-    validator.isTokenExist, // 1. 檢查 token 是否存在 (M1)
-    validator.isTokenVaild, // 2. 檢查 token 是否正確 (M2)
+    //validator.isTokenExist, // 1. 檢查 token 是否存在 (M1)
+    //validator.isTokenVaild, // 2. 檢查 token 是否正確 (M2)
 
     // 1. 檢查 type 是否存在 (m1)
     (req, res, next) => {
@@ -105,8 +113,8 @@ router.get("/list",
 // [Work2] 加入 API token 檢查機制, 預期使用者 token 寫在 headers
 router.post("/data",
 
-    validator.isTokenExist, // 1. 檢查 token 是否存在 (M1)
-    validator.isTokenVaild, // 2. 檢查 token 是否正確 (M2)
+    //validator.isTokenExist, // 1. 檢查 token 是否存在 (M1)
+    //validator.isTokenVaild, // 2. 檢查 token 是否正確 (M2)
     
     // 3. 處理業務邏輯 (M3)
     async (req, res)=> {
