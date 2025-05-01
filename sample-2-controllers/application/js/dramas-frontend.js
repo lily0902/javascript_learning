@@ -10,7 +10,10 @@ $(function(){
             //url  : "/dramas/list", // 1. 忘記帶 type
             //url  : "/dramas/list?type=ABCD", // 2. type 亂帶
             url  : "/dramas/list?type="+type,  // 3. type 正常
-            type : "GET",
+            type: "GET",
+            headers: {
+                "x-jeff-token" : "APTX4869"  // 3. token 正確
+            },
             timeout: 10000 // 10 sec
         })
             .then(function (response) {
@@ -82,7 +85,7 @@ let insertNewRecord = ()=> {
 
     $.ajax({
         url: "/dramas/data",
-        type: "POST",
+        type: "POST", // requests method
         
         //新增 headers key-value pair
         headers: {

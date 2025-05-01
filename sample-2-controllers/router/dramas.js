@@ -2,6 +2,11 @@ const express = require("express");
 const fs      = require("fs");
 
 let router = express.Router();
+let validator = require("../utils/validator");
+// 此時 vaildator 變數 即為{
+//    "isTokenExist" : isTokenExist, // value 為 middleware 本人
+//    "isTokenVaild" : isTokenVaild
+// }
 
 let readFilePromise = (dataPath) => {
     return new Promise((resolve, reject) => {
@@ -42,7 +47,13 @@ router.get("/page",
 
 // GET /dramas/list --> 取得資料
 // [Work1] 加入參數檢查 (M1)
+// [work3] 使用共用的 Middleware  (實名 Middleware) 
 router.get("/list",
+
+    //////使用 validator.js 的 middleware (實名 Middleware)
+    validator.isTokenExist, // 1. 檢查 token 是否存在 (M1)
+    validator.isTokenVaild, // 2. 檢查 token 是否正確 (M2)
+
     // 1. 檢查 type 是否存在 (m1)
     (req, res, next) => {
         if (!req.query.type) {
@@ -93,30 +104,10 @@ router.get("/list",
 // POST /dramas/data
 // [Work2] 加入 API token 檢查機制, 預期使用者 token 寫在 headers
 router.post("/data",
-    // 1. 檢查 header 是否有 token (M1)
-    (req, res, next) => {
-        // 檢查 headers --> req.headers
-        if (!req.headers["x-jeff-token"]) {
-            console.log("[M1] 無 token !!!");
-            res.status(400).json({ message: "token 人呢???" });
-        }
-        else {
-            next();
-        }
-    },
 
-    // 2. 檢查 token 是否正確 (M2)
-    (req, res, next) => {
-        if (req.headers["x-jeff-token"] !== "APTX4869") { 
-            console.log("[M2] token 錯誤 !!!");
-
-            // status_code = 403 --> 無權限 (Forbidden)
-            res.status(403).json({ message: "您沒有權限!" });
-        }
-        else {
-            next();
-        }
-    },
+    validator.isTokenExist, // 1. 檢查 token 是否存在 (M1)
+    validator.isTokenVaild, // 2. 檢查 token 是否正確 (M2)
+    
     // 3. 處理業務邏輯 (M3)
     async (req, res)=> {
     try{
