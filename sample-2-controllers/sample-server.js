@@ -4,7 +4,8 @@ const app = express();
 const hbs    = require("hbs");
 const path   = require("path");
 
-const bodyParser   = require("body-parser");
+const bodyParser = require("body-parser");
+const session = require("express-session"); //[session][1] 安裝 express-session
 
 
 const dramasRouter = require("./router/dramas");
@@ -26,23 +27,52 @@ app.use(express.static(path.join(__dirname,"application")));
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
 		extended : false ,
-		limit : "1mb",
+		limit : "1mb", 
 		parameterLimit : '10000'
 }));
+
+// 處理 session 資料的 middleware
+// 後面才可用 req.session 做資料存取
+// [session][2] 設定 session middleware
+app.use(session({
+	secret: "c90dis90#",
+	resave: true,
+	saveUninitialized: false,
+	name: "_ntust_tutorial_id",
+	ttl: 24 * 60 * 60 * 1
+}));
+
+
+app.use("/auth", authRouter);
 
 
 
 app.use("/about",aboutRouter);
 app.use("/dramas", dramasRouter);
-app.use("/auth", authRouter);
 
-//加入 login 頁面 
+/////// 登入驗證
+// 1. 加入 login 頁面 
+// 2. POST /auth API 驗證 + 紀錄資料到 session 上 
+// 3. GET /logout 登出 API
+// 4. 加入 登入驗證 middleware (isUserLogined)
+
 app.get("/login", (req, res) => {
 	res.render("login.html");
 });
 
 
-app.get("/",(req,res)=>{
+app.get("/",
+	// [session][4] 加入登入驗證判斷 middleware
+	(req, res, next) => { // 是否登入驗證
+		console.log(req.session);
+		if (req.session.userInfo && req.session.userInfo.isLogined) {
+			next();
+		}
+		else {
+			res.send("尚未登入")
+		}
+	},
+	(req, res) => {
     res.render("index.html");
 });
 
