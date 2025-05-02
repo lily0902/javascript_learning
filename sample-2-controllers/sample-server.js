@@ -8,7 +8,8 @@ const bodyParser   = require("body-parser");
 
 
 const dramasRouter = require("./router/dramas");
-const aboutRouter  = require("./router/about");
+const aboutRouter = require("./router/about");
+const authRouter = require("./router/auth");
 
 
 // 設定模板引擎
@@ -32,7 +33,13 @@ app.use( bodyParser.urlencoded( {
 
 
 app.use("/about",aboutRouter);
-app.use("/dramas",dramasRouter);
+app.use("/dramas", dramasRouter);
+app.use("/auth", authRouter);
+
+//加入 login 頁面 
+app.get("/login", (req, res) => {
+	res.render("login.html");
+});
 
 
 app.get("/",(req,res)=>{
