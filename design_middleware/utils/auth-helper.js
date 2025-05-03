@@ -42,7 +42,18 @@ exports.decodeToken = (req,res,next) => {
 
         // 解密的資料 , 存入 req.user 上
         req.user = decoded.data;
+        console.log(req.user);
 
         next();
     });
+};
+
+// 檢查 token 是否有攜帶
+exports.isTokenExist = (req, res, next) => { 
+    if (!req.query.token) {
+        res.status(401).json({ message: "缺少 token" });
+    }
+    else {
+        next();
+    }
 };
