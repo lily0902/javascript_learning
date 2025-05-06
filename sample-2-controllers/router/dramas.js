@@ -8,6 +8,9 @@ let validator = require("../utils/validator");
 //    "isTokenVaild" : isTokenVaild
 // }
 
+// isUserLogin 外移到 validator
+router.use(validator.isUserLogin);
+
 let readFilePromise = (dataPath) => {
     return new Promise((resolve, reject) => {
         fs.readFile(dataPath,"utf8", (err, data) => {

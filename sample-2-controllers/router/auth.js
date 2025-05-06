@@ -14,7 +14,10 @@ router.post("/",
 
     // 4. response 回應前端
     (req, res, next) => {
-        res.json({ message: "接到 requests , 等待開發 ~~~" });
+        res.json({
+            message: "接到 requests , 等待開發 ~~~",
+            redirect: "/"
+        });
 });
 
 module.exports = router;

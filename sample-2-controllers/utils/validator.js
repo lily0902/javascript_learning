@@ -57,6 +57,16 @@ let setSessionInfo = (req, res, next) => {
 
     next();
 };
+
+let isUserLogin = (req, res, next) => {
+    if (!req.session.userInfo || req.session.userInfo.isLogined === false) {
+            res.redirect("/login");
+            return;
+        }
+    else {
+        next();
+    }
+}
     
 //一定要 module.exports 出去
 module.exports = {
@@ -64,5 +74,6 @@ module.exports = {
     "isTokenVaild": isTokenVaild,
     "isAccountAndPasswdExist": isAccountAndPasswdExist,
     "isUserVaild": isUserVaild,
-    "setSessionInfo" : setSessionInfo
+    "setSessionInfo": setSessionInfo,
+    "isUserLogin": isUserLogin
 }
