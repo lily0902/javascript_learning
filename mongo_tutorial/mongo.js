@@ -66,7 +66,8 @@ const membersSchema = new mongoose.Schema({
     "age": Number,
     "math_score": Number
 }, {
-    collection: "members"
+    collection: "members",
+    versionKey : false // 移除 __v欄位
 });
 
 let membersModel = conn.model("Members", membersSchema);
@@ -86,7 +87,12 @@ let findMain2 = async () => {
 
 let insertMain2 = async () => {
     try {
-        let result = await membersModel.create({ name: "bensen", gender: "M", age: 44, math_score: 88 });
+        // 正常情況
+        //let result = await membersModel.create({ name: "bensen", gender: "M", age: 44, math_score: 88 });
+
+        // 錯誤情況
+        let result = await membersModel.create({ name: "david", gender: "M", age: 46, eng_score: 88 });
+
         console.log(result);
     }
     catch (err) {

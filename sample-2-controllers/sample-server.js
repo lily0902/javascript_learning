@@ -16,12 +16,12 @@ let validator = require("./utils/validator");
 
 // [Seeeion 外存][1]
 // 追加 redis 套件 (node.js 使用)
-const redis = require("redis");
-const redisClient = redis.createClient(); //產生 redisClient 的連線實例 (instance)
+//const redis = require("redis");
+//const redisClient = redis.createClient(); //產生 redisClient 的連線實例 (instance)
 
 // [Session 外存][2]
 // 追加 connect-redis 套件 (專門為 express 設計的對接套件)
-const redisStore = require("connect-redis")(session); 
+//const redisStore = require("connect-redis")(session); 
 
 
 
@@ -48,7 +48,7 @@ app.use( bodyParser.urlencoded( {
 // [session][2] 設定 session middleware
 app.use(session({
 	// [Session 外存][3] 設定好 redisStore
-	store: new redisStore({ client: redisClient}), // session 資料存放的地方 
+	//store: new redisStore({ client: redisClient}), // session 資料存放的地方 
 	secret: "c90dis90#",   // session 資料加密使用
 	resave: true,  // 不論修改 , 是否回存到 store 上
 	saveUninitialized: false, // 初始化的 session 是否要存到 store 上
