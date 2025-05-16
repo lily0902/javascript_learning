@@ -82,4 +82,16 @@ let findMain2 = async () => {
     }
 }
 
-findMain2();
+//findMain2();
+
+let insertMain2 = async () => {
+    try {
+        let result = await membersModel.create({ name: "bensen", gender: "M", age: 44, math_score: 88 });
+        console.log(result);
+    }
+    catch (err) {
+        console.log(err);
+    }
+};
+
+insertMain2();
