@@ -23,16 +23,63 @@ const testqq = new mongoose.Schema({
     collection : "testqq"  // 要操作的 collection (table) 名稱
 });
 
-// 建立 Model 物件
-let dramasModel = conn.model("Dramas", testqq);
+// 建立 Model 物件 (在 conn 連線上 , 註冊一個物件)
+// (Node.js 透過 Model 物件 , 和 collection (表格) 互動)
+let dramasModel = conn.model("Dramas", testqq); // "Dramas" : testqq
 
 
 /// 3. 透過 Model 進行 CRUD 操作
 // 非同步的動作 --> 使用 Promise 處理
-dramasModel.find()
-    .then(data => {
-        console.log(data);
-    })
-    .catch(err => {
+// dramasModel.find()
+//     .then(data => {
+//         console.log(data);
+//     })
+//     .catch(err => {
+//         console.log(err);
+//     })
+
+// Async / Await 處理
+let main = async () => {
+    try {
+        //let data = await dramasModel.find();
+        //console.log(data);
+
+        // [補充] .find (條件 , 顯示欄位)
+        let data2 = await dramasModel.find(
+            { "category": "政治" },
+            { category: 1, name: 1, score: 1 , _id : 0}
+        );
+        console.log(data2);
+    }
+    catch (err) {
         console.log(err);
-    })
+    }
+};
+
+//main();
+
+////////////////////////////
+// 建立 2nd Schema & Model
+const membersSchema = new mongoose.Schema({
+    "name": String,
+    "gender": String,
+    "age": Number,
+    "math_score": Number
+}, {
+    collection: "members"
+});
+
+let membersModel = conn.model("Members", membersSchema);
+
+let findMain2 = async () => {
+    try {
+        //let data2 = await membersModel.find({ "math_score": { "$gte": 60 } });
+        let data2 = await membersModel.findOne({ "math_score": { "$gte": 60 } });
+        console.log(data2)
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+findMain2();
