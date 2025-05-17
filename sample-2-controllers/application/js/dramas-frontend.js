@@ -41,6 +41,23 @@ $(function(){
         insertNewRecord();
     });
 
+       // 影集資料 修改
+    $("#drama-update-btn").click(updateDramaDetail);
+
+
+    // 影集資料 刪除
+    $("#drama-delete-btn").click(function(){
+        var dramaId = $("#id-delete").val();
+
+        if(!dramaId || dramaId.length === 0){
+            alert("請輸入影集ID ！");
+            return;
+        };
+
+        var check = confirm("確定刪除影集編號 : " + dramaId + " 的資料?");
+
+        if(check) deleteDramaDetail(dramaId);
+    });
 });
 
 let createTable = (data)=>{
@@ -129,5 +146,85 @@ let insertNewRecord = ()=> {
         // };
         
         //alert("系統有誤 , 請稍後再試！");
+    });
+};
+
+let updateDramaDetail = function(){
+    var dramaId   = $("#id-update").val();
+    let name      = $("#name-update").val();
+    let score     = $("#score-update").val();
+
+
+    if(!dramaId || dramaId.length === 0){
+        alert("請輸入影集ID ！");
+        return;
+    };
+
+
+    if(!name || name.length === 0){
+        alert("請輸入劇名！");
+        return;
+    };
+
+    if(!score || score.legnth === 0){
+        alert("請輸入評價！");
+        return;
+    };
+
+
+    $.ajax({
+        url  : "/dramas/detail/" + dramaId,
+        type : "PUT",
+        data: { name, score },
+        //新增 headers key-value pair
+        headers: {
+            // 1. 沒帶 token
+            //"x-jeff-token": "qqq"  // 2. token 帶錯
+            "x-jeff-token" : "APTX4869"  // 3. token 正確
+        },
+    })
+    .then(r=>{
+        if(r.message === "ok.") alert("修改完成！");
+        
+    })
+    .catch(err=>{
+        console.log(err);
+
+        if(err.status === 404){
+            alert("找不到該 API !");
+            return;
+        };
+        
+        alert("系統有誤 , 請稍後再試！");
+    });
+
+};
+
+
+let deleteDramaDetail = function(dramaId){
+
+    $.ajax({
+        url  : "/dramas/detail/" + dramaId,
+        type: "DELETE",
+        //新增 headers key-value pair
+        headers: {
+            // 1. 沒帶 token
+            //"x-jeff-token": "qqq"  // 2. token 帶錯
+            "x-jeff-token" : "APTX4869"  // 3. token 正確
+        },
+    })
+    .then(r=>{
+        if(r.message === "ok.") alert("刪除完成！");
+        
+    })
+    .catch(err=>{
+        console.log(err);
+
+        if(err.status === 404){
+            alert("找不到該 API !");
+            return;
+        };
+        
+        alert("系統有誤 , 請稍後再試！");
     });
 };
